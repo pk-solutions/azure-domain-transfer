@@ -35,18 +35,18 @@ $agreedAtDateTime = Get-Date -format u
 
 # Login to Azure and select subscription
 Write-Output "Logging in"
-Login-AzureRmAccount
+Login-AzAccount
 
 if($subscriptionId)
 {
     # Let the user select the subscription
     Write-Output "Selecting subscription '$subscriptionId'";
-    Select-AzureRmSubscription -SubscriptionId $subscriptionId;
+    Select-AzSubscription -SubscriptionId $subscriptionId;
 }
 
 # Register the Microsoft Domains resource provider for the subscription
 Write-Output "Register the Microsoft Domains resource provider for the subscription"
-Register-AzureRmResourceProvider -ProviderNamespace Microsoft.DomainRegistration
+Register-AzResourceProvider -ProviderNamespace Microsoft.DomainRegistration
 
 $resourceProperties = @{
     'Consent' = @{
@@ -59,4 +59,4 @@ $resourceProperties = @{
     'autoRenew' = 'true';
 }
 
-New-AzureRmResource -ResourceName $domainName -Location $resourceLocation -ResourceType Microsoft.DomainRegistration/domains -ResourceGroupName $resourcegroupName -Properties $resourceProperties -ApiVersion 2015-02-01 -Verbose
+New-AzResource -ResourceName $domainName -Location $resourceLocation -ResourceType Microsoft.DomainRegistration/domains -ResourceGroupName $resourcegroupName -Properties $resourceProperties -Verbose
